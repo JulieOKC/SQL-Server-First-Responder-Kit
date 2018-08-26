@@ -48,17 +48,17 @@ AS
 	the findings, contribute your own code, and more.
 
 	Known limitations of this version:
-	 - Only Microsoft-supported versions of SQL Server. Sorry, 2005 and 2000.
-	 - If a database name has a question mark in it, some tests will fail. Gotta
+	- Only Microsoft-supported versions of SQL Server. Sorry, 2005 and 2000.
+	- If a database name has a question mark in it, some tests will fail. Gotta
 	   love that unsupported sp_MSforeachdb.
-	 - If you have offline databases, sp_Blitz fails the first time you run it,
+	- If you have offline databases, sp_Blitz fails the first time you run it,
 	   but does work the second time. (Hoo, boy, this will be fun to debug.)
       - @OutputServerName will output QueryPlans as NVARCHAR(MAX) since Microsoft
 	    has refused to support XML columns in Linked Server queries. The bug is now
 		16 years old! *~ \o/ ~*
 
 	Unknown limitations of this version:
-	 - None.  (If we knew them, they would be known. Duh.)
+	- None.  (If we knew them, they would be known. Duh.)
 
      Changes - for the full list of improvements and fixes in this version, see:
      https://github.com/BrentOzarULTD/SQL-Server-First-Responder-Kit/
@@ -391,7 +391,7 @@ AS
 		CREATE TABLE #DBCCs
 			(
 			  ID INT IDENTITY(1, 1)
-					 PRIMARY KEY ,
+					PRIMARY KEY ,
 			  ParentObject VARCHAR(255) ,
 			  Object VARCHAR(255) ,
 			  Field VARCHAR(255) ,
@@ -458,7 +458,7 @@ AS
 		CREATE TABLE #dm_exec_query_stats
 			(
 			  [id] [int] NOT NULL
-						 IDENTITY(1, 1) ,
+						IDENTITY(1, 1) ,
 			  [sql_handle] [varbinary](64) NOT NULL ,
 			  [statement_start_offset] [int] NOT NULL ,
 			  [statement_end_offset] [int] NOT NULL ,
@@ -496,7 +496,7 @@ AS
 			  [query_plan] [xml] NULL ,
 			  [query_plan_filtered] [nvarchar](MAX) NULL ,
 			  [text] [nvarchar](MAX) COLLATE SQL_Latin1_General_CP1_CI_AS
-									 NULL ,
+									NULL ,
 			  [text_filtered] [nvarchar](MAX) COLLATE SQL_Latin1_General_CP1_CI_AS
 											  NULL
 			);
@@ -527,7 +527,7 @@ AS
 			  ApplicationName NVARCHAR(256) ,
 			  LoginName NVARCHAR(256) ,
 			  DBUserName NVARCHAR(256)
-			 );
+			);
 
 		IF OBJECT_ID('tempdb..#Instances') IS NOT NULL
 			DROP TABLE #Instances;
@@ -684,10 +684,10 @@ AS
 		checks on this server, so let's check for that:
 		*/
 		IF ( ( SERVERPROPERTY('ServerName') NOT IN ( SELECT ServerName
-													 FROM   #SkipChecks
-													 WHERE  DatabaseName IS NULL
+													FROM   #SkipChecks
+													WHERE  DatabaseName IS NULL
 															AND CheckID IS NULL ) )
-			 OR ( @SkipChecksTable IS NULL )
+			OR ( @SkipChecksTable IS NULL )
 		   )
 			BEGIN
 
@@ -847,8 +847,8 @@ AS
 															FROM  #SkipChecks
 															WHERE CheckID IS NULL OR CheckID = 2)
 										AND NOT EXISTS ( SELECT *
-														 FROM   msdb.dbo.backupset b
-														 WHERE  d.name COLLATE SQL_Latin1_General_CP1_CI_AS = b.database_name COLLATE SQL_Latin1_General_CP1_CI_AS
+														FROM   msdb.dbo.backupset b
+														WHERE  d.name COLLATE SQL_Latin1_General_CP1_CI_AS = b.database_name COLLATE SQL_Latin1_General_CP1_CI_AS
 																AND b.type = 'L'
 																AND b.backup_finish_date >= DATEADD(dd,
 																  -7, GETDATE()) );
@@ -948,8 +948,8 @@ AS
 									FROM    #SkipChecks
 									WHERE   DatabaseName IS NULL AND CheckID = 119 )
 						AND EXISTS ( SELECT *
-									 FROM   sys.all_objects o
-									 WHERE  o.name = 'dm_database_encryption_keys' )
+									FROM   sys.all_objects o
+									WHERE  o.name = 'dm_database_encryption_keys' )
 						BEGIN
 
 							IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 119) WITH NOWAIT;
@@ -975,11 +975,11 @@ AS
 									FROM    #SkipChecks
 									WHERE   DatabaseName IS NULL AND CheckID = 202 )
 						AND EXISTS ( SELECT *
-									 FROM   sys.all_columns c
-									 WHERE  c.name = 'pvt_key_last_backup_date' )
+									FROM   sys.all_columns c
+									WHERE  c.name = 'pvt_key_last_backup_date' )
 						AND EXISTS ( SELECT *
-									 FROM   msdb.INFORMATION_SCHEMA.COLUMNS c
-									 WHERE  c.TABLE_NAME = 'backupset' AND c.COLUMN_NAME = 'encryptor_thumbprint' )
+									FROM   msdb.INFORMATION_SCHEMA.COLUMNS c
+									WHERE  c.TABLE_NAME = 'backupset' AND c.COLUMN_NAME = 'encryptor_thumbprint' )
 						BEGIN
 
 							IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 202) WITH NOWAIT;
@@ -1808,7 +1808,7 @@ AS
 										'https://BrentOzar.com/go/conf' AS URL ,
 										( 'This sp_configure option has been changed.  Its default value is '
 										  + COALESCE(CAST(cd.[DefaultValue] AS VARCHAR(100)),
-													 '(unknown)')
+													'(unknown)')
 										  + ' and it has been set to '
 										  + CAST(cr.value_in_use AS VARCHAR(100))
 										  + '.' ) AS Details
@@ -1952,8 +1952,8 @@ AS
 										'TempDB on C Drive' AS Finding ,
 										'https://BrentOzar.com/go/cdrive' AS URL ,
 										CASE WHEN growth > 0
-											 THEN ( 'The tempdb database has files on the C drive.  TempDB frequently grows unpredictably, putting your server at risk of running out of C drive space and crashing hard.  C is also often much slower than other drives, so performance may be suffering.' )
-											 ELSE ( 'The tempdb database has files on the C drive.  TempDB is not set to Autogrow, hopefully it is big enough.  C is also often much slower than other drives, so performance may be suffering.' )
+											THEN ( 'The tempdb database has files on the C drive.  TempDB frequently grows unpredictably, putting your server at risk of running out of C drive space and crashing hard.  C is also often much slower than other drives, so performance may be suffering.' )
+											ELSE ( 'The tempdb database has files on the C drive.  TempDB is not set to Autogrow, hopefully it is big enough.  C is also often much slower than other drives, so performance may be suffering.' )
 										END AS Details
 								FROM    sys.master_files
 								WHERE   UPPER(LEFT(physical_name, 1)) = 'C'
@@ -2094,8 +2094,8 @@ AS
 								WHERE   DatabaseName IS NULL AND CheckID = 30 )
 					BEGIN
 						IF ( SELECT COUNT(*)
-							 FROM   msdb.dbo.sysalerts
-							 WHERE  severity BETWEEN 19 AND 25
+							FROM   msdb.dbo.sysalerts
+							WHERE  severity BETWEEN 19 AND 25
 						   ) < 7
 
 						   BEGIN
@@ -2465,8 +2465,8 @@ AS
 								WHERE   DatabaseName IS NULL AND CheckID = 40 )
 					BEGIN
 						IF ( SELECT COUNT(*)
-							 FROM   tempdb.sys.database_files
-							 WHERE  type_desc = 'ROWS'
+							FROM   tempdb.sys.database_files
+							WHERE  type_desc = 'ROWS'
 						   ) = 1
 							BEGIN
 
@@ -2607,7 +2607,7 @@ AS
 												   + ' is configured as a linked server. Check its security configuration as it is connecting with sa, because any user who queries it will get admin-level permissions.'
 											  ELSE COALESCE(s.data_source, s.provider)
 												   + ' is configured as a linked server. Check its security configuration to make sure it isn''t connecting with SA or some other bone-headed administrative login, because any user who queries it might get admin-level permissions.'
-										 END AS Details
+										END AS Details
 								FROM    sys.servers s
 										INNER JOIN sys.linked_logins l ON s.server_id = l.server_id
 								WHERE   s.is_linked = 1;
@@ -2724,6 +2724,71 @@ AS
 										'This is a node in a cluster.' AS Details
 								FROM    sys.dm_os_cluster_nodes;
 					END;
+				IF NOT EXISTS ( SELECT  1
+								FROM    #SkipChecks
+								WHERE   DatabaseName IS NULL AND CheckID = 55 )
+					BEGIN
+
+						IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 55) WITH NOWAIT;
+                        IF SERVERPROPERTY(N'IsHadrEnabled') = 1
+                           BEGIN -- Server is AG
+                              DECLARE @strData as nvarchar(125);
+                              DECLARE @NodeListener AS nvarchar;
+                              DECLARE @ListenerConnect as BIT;
+                              SET @strData = '';
+                              SET @NodeListener = '';
+                              SET @ListenerConnect = '';
+                              SET @ListenerConnect = (SELECT COUNT(agl.dns_name)
+                                                      FROM sys.availability_groups AS ag
+                                                      JOIN sys.availability_group_listeners agl ON ag.group_id = agl.group_id
+                                                      JOIN sys.availability_group_listener_ip_addresses aglip ON agl.listener_id = aglip.listener_id
+                                                      JOIN sys.dm_exec_connections ec ON aglip.ip_address = ec.local_net_address
+                                                      WHERE ec.session_id = @@spid)
+                              SET @strData =
+                              CASE @ListenerConnect
+                                 WHEN 0 THEN 'This server is part of AG cluster. Current connection is to the server.'
+                              ELSE 'This server is part of AG cluster. Current connection is to the listener.'
+                              END -- CASE
+                              INSERT  INTO #BlitzResults
+						                 ( CheckID ,
+						                   DatabaseName ,
+						                   Priority ,
+						                   FindingsGroup ,
+						                   Finding ,
+   						                URL ,
+	   					                Details
+		   				              )
+                              SELECT '9999',NULL, '200', 'Informational','Availability Group Cluster Info', 'https://BrentOzar.com/', @strData
+                              UNION
+                              SELECT '9999',NULL,'200', 'Informational','Availability Group Cluster Info', 'https://BrentOzar.com/'
+                                 , 'Cluster name = ' + cluster_name + '. Cluster quorum type = ' + quorum_type_desc + '. Available types are: Node Majority, Node & Disk Majority, Node & File Share Majority, No Majority'
+                                 FROM sys.dm_hadr_cluster
+                              UNION
+                              SELECT '9999',NULL,'200', 'Informational','Availability Group Cluster Info', 'https://BrentOzar.com/'
+                                 , 'Node names for the cluster: ' + STUFF ((SELECT ', ' + member_name
+                                 FROM sys.dm_hadr_cluster_members WHERE member_type = 0
+                                 FOR XML PATH('')),1,2,'')
+                              UNION
+                              SELECT '9999',NULL,'200', 'Informational','Availability Group Cluster Info', 'https://BrentOzar.com/'
+                                 , 'This Availability Group is using a ' + member_type_desc + '.'
+                                 FROM sys.dm_hadr_cluster_members WHERE member_type <> 0
+                              UNION
+                              SELECT '9999',NULL,'200', 'Warning','Availability Group Cluster Info - warning', 'https://BrentOzar.com/'
+                                 , 'Node ' + member_name + ' is offline! This means the server cannot participate in a faileover!'
+                                 FROM sys.dm_hadr_cluster_members
+                                 WHERE member_state = 0
+                              UNION
+                              SELECT DISTINCT '9999',NULL,'200', 'Informational','Availability Group Cluster Info'
+                                 , 'https://BrentOzar.com/'
+                                 , 'Total quorum votes = ' + (CAST((select COUNT(*) FROM sys.dm_hadr_cluster_members
+                                 WHERE number_of_quorum_votes = 1) AS nchar(3))) + ' held by : ' +
+                                 STUFF ((SELECT ', ' + member_name
+                                         FROM sys.dm_hadr_cluster_members
+                                         WHERE number_of_quorum_votes = 1
+                                 FOR XML PATH('')),1,2,'')
+                              FROM sys.dm_hadr_cluster_members
+                        END -- Begin
+					END; 
 
 				IF NOT EXISTS ( SELECT  1
 								FROM    #SkipChecks
@@ -2931,8 +2996,8 @@ AS
 								FROM    msdb.[dbo].[sysjobs] j
 										INNER JOIN ( SELECT DISTINCT
 															[job_id]
-													 FROM   [msdb].[dbo].[sysjobschedules]
-													 WHERE  next_run_date > 0
+													FROM   [msdb].[dbo].[sysjobschedules]
+													WHERE  next_run_date > 0
 												   ) s ON j.job_id = s.job_id
 								WHERE   j.enabled = 1
 										AND j.notify_email_operator_id = 0
@@ -2946,8 +3011,8 @@ AS
 							WHERE   name = 'remote admin connections'
 									AND value_in_use = 0 )
 					AND NOT EXISTS ( SELECT 1
-									 FROM   #SkipChecks
-									 WHERE  DatabaseName IS NULL AND CheckID = 100 )
+									FROM   #SkipChecks
+									WHERE  DatabaseName IS NULL AND CheckID = 100 )
 					BEGIN
 
 						IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 100) WITH NOWAIT;
@@ -2972,8 +3037,8 @@ AS
 							FROM    sys.dm_os_schedulers
 							WHERE   is_online = 0 )
 					AND NOT EXISTS ( SELECT 1
-									 FROM   #SkipChecks
-									 WHERE  DatabaseName IS NULL AND CheckID = 101 )
+									FROM   #SkipChecks
+									WHERE  DatabaseName IS NULL AND CheckID = 101 )
 					BEGIN
 
 						IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 101) WITH NOWAIT;
@@ -3031,8 +3096,8 @@ AS
 							FROM    sys.databases
 							WHERE   state > 1 )
 					AND NOT EXISTS ( SELECT 1
-									 FROM   #SkipChecks
-									 WHERE  DatabaseName IS NULL AND CheckID = 102 )
+									FROM   #SkipChecks
+									WHERE  DatabaseName IS NULL AND CheckID = 102 )
 					BEGIN
 
 						IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 102) WITH NOWAIT;
@@ -3060,8 +3125,8 @@ AS
 				IF EXISTS ( SELECT  *
 							FROM    master.sys.extended_procedures )
 					AND NOT EXISTS ( SELECT 1
-									 FROM   #SkipChecks
-									 WHERE  DatabaseName IS NULL AND CheckID = 105 )
+									FROM   #SkipChecks
+									WHERE  DatabaseName IS NULL AND CheckID = 105 )
 					BEGIN
 
 						IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 105) WITH NOWAIT;
@@ -3087,8 +3152,8 @@ AS
 					END;
 
 					IF NOT EXISTS ( SELECT 1
-										 FROM   #SkipChecks
-										 WHERE  DatabaseName IS NULL AND CheckID = 107 )
+										FROM   #SkipChecks
+										WHERE  DatabaseName IS NULL AND CheckID = 107 )
 						BEGIN
 							
 							IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 107) WITH NOWAIT;
@@ -3115,8 +3180,8 @@ AS
 						END;
 
 					IF NOT EXISTS ( SELECT 1
-										 FROM   #SkipChecks
-										 WHERE  DatabaseName IS NULL AND CheckID = 121 )
+										FROM   #SkipChecks
+										WHERE  DatabaseName IS NULL AND CheckID = 121 )
 						BEGIN
 
 							IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 121) WITH NOWAIT;
@@ -3143,8 +3208,8 @@ AS
 
 
 						IF NOT EXISTS ( SELECT 1
-										 FROM   #SkipChecks
-										 WHERE  DatabaseName IS NULL AND CheckID = 111 )
+										FROM   #SkipChecks
+										WHERE  DatabaseName IS NULL AND CheckID = 111 )
 						BEGIN
 
 							IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 111) WITH NOWAIT;
@@ -3206,8 +3271,8 @@ AS
 							END;
 
 						IF NOT EXISTS ( SELECT 1
-										 FROM   #SkipChecks
-										 WHERE  DatabaseName IS NULL AND CheckID = 116 )
+										FROM   #SkipChecks
+										WHERE  DatabaseName IS NULL AND CheckID = 116 )
 									AND EXISTS (SELECT * FROM msdb.sys.all_columns WHERE name = 'compressed_backup_size')
 						BEGIN
 
@@ -4277,15 +4342,15 @@ IF @ProductVersionMajor >= 10
 								[path] +
 								'. It''s currently ' +
 								CASE WHEN [current_size_in_kb] / 1024. / 1024. > 0
-																	 THEN CAST([current_size_in_kb] / 1024. / 1024. AS VARCHAR(100))
+																	THEN CAST([current_size_in_kb] / 1024. / 1024. AS VARCHAR(100))
 																		  + ' GB'
-																	 ELSE CAST([current_size_in_kb] / 1024. AS VARCHAR(100))
+																	ELSE CAST([current_size_in_kb] / 1024. AS VARCHAR(100))
 																		  + ' MB'
 								END +
 								'. Did you know that BPEs only provide single threaded access 8KB (one page) at a time?'	
 							   ) AS [Details]
-							 FROM sys.dm_os_buffer_pool_extension_configuration
-							 WHERE [state_description] <> 'BUFFER POOL EXTENSION DISABLED';
+							FROM sys.dm_os_buffer_pool_extension_configuration
+							WHERE [state_description] <> 'BUFFER POOL EXTENSION DISABLED';
 
 					END;
 
@@ -4612,7 +4677,7 @@ IF @ProductVersionMajor >= 10
 		
 		         IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 198) WITH NOWAIT
 				
-				 INSERT INTO #BlitzResults
+				INSERT INTO #BlitzResults
 		                (
 		                  CheckID,
 		                  DatabaseName,
@@ -4661,7 +4726,7 @@ IF @ProductVersionMajor >= 10
 								ISNULL(
 									NULLIF(
 										CHARINDEX('(', CONVERT(NVARCHAR(MAX), t.TextData)),
-										 0),
+										0),
 									  LEN(CONVERT(NVARCHAR(MAX), t.TextData)) + 1 )) --This replaces everything up to an open paren, if one exists.
 										, SUBSTRING(CONVERT(NVARCHAR(MAX), t.TextData),
 											ISNULL(
@@ -4689,7 +4754,7 @@ IF @ProductVersionMajor >= 10
 		    t.ApplicationName AS [application_name],
 			t.LoginName [login_name],
 			t.DBUserName AS [db_user_name]
-		 	INTO #dbcc_events_from_trace
+			INTO #dbcc_events_from_trace
 		    FROM #fnTraceGettable AS t
 			WHERE t.EventClass = 116
 			OPTION(RECOMPILE)
@@ -5112,8 +5177,8 @@ IF @ProductVersionMajor >= 10
 						
 							IF @ProductVersionMajor >= 13 AND @ProductVersionMinor < 2149 --CU1 has the fix in it
 							AND NOT EXISTS ( SELECT  1
-											 FROM    #SkipChecks
-											 WHERE   DatabaseName IS NULL AND CheckID = 182 )
+											FROM    #SkipChecks
+											WHERE   DatabaseName IS NULL AND CheckID = 182 )
 							AND CAST(SERVERPROPERTY('edition') AS VARCHAR(100)) NOT LIKE '%Enterprise%'
 							AND CAST(SERVERPROPERTY('edition') AS VARCHAR(100)) NOT LIKE '%Developer%'
 							BEGIN
@@ -5687,7 +5752,7 @@ IF @ProductVersionMajor >= 10
 								JOIN sys.data_spaces ds on ds.data_space_id = i.data_space_id
 								LEFT OUTER JOIN sys.dm_db_index_usage_stats AS s ON i.object_id = s.object_id AND i.index_id = s.index_id AND s.database_id = DB_ID()
 								WHERE  o.type = ''u''
-								 -- Clustered and Non-Clustered indexes
+								-- Clustered and Non-Clustered indexes
 								AND i.type IN (1, 2)
 								AND o.object_id in
 								  (
@@ -5946,7 +6011,7 @@ IF @ProductVersionMajor >= 10
 									LEFT OUTER JOIN #DatabaseScopedConfigurationDefaults def ON dsc.configuration_id = def.configuration_id AND (dsc.value = def.default_value OR dsc.value IS NULL) AND (dsc.value_for_secondary = def.default_value_for_secondary OR dsc.value_for_secondary IS NULL)
 									LEFT OUTER JOIN #SkipChecks sk ON (sk.CheckID IS NULL OR def.CheckID = sk.CheckID) AND (sk.DatabaseName IS NULL OR sk.DatabaseName = DB_NAME())
 									WHERE def.configuration_id IS NULL AND sk.CheckID IS NULL ORDER BY 1
-									 OPTION (RECOMPILE);';
+									OPTION (RECOMPILE);';
 					        END;
 
 	
@@ -5987,8 +6052,8 @@ IF @ProductVersionMajor >= 10
 												AND cp.objtype = 'Adhoc'
 												AND EXISTS ( SELECT
 																  1
-															 FROM sys.configurations
-															 WHERE
+															FROM sys.configurations
+															WHERE
 																  name = 'optimize for ad hoc workloads'
 																  AND value_in_use = 0 )
 										HAVING  COUNT(*) > 1;
@@ -6184,9 +6249,9 @@ IF @ProductVersionMajor >= 10
 												qs.query_plan_filtered
 										FROM    #dm_exec_query_stats qs
 										WHERE   COALESCE(qs.query_plan_filtered,
-														 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%CONVERT_IMPLICIT%'
+														CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%CONVERT_IMPLICIT%'
 												AND COALESCE(qs.query_plan_filtered,
-															 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%PhysicalOp="Index Scan"%';
+															CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%PhysicalOp="Index Scan"%';
 							END;
 
 						IF NOT EXISTS ( SELECT  1
@@ -6216,7 +6281,7 @@ IF @ProductVersionMajor >= 10
 												qs.query_plan_filtered
 										FROM    #dm_exec_query_stats qs
 										WHERE   COALESCE(qs.query_plan_filtered,
-														 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%<PlanAffectingConvert ConvertIssue="Cardinality Estimate" Expression="CONVERT_IMPLICIT%';
+														CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%<PlanAffectingConvert ConvertIssue="Cardinality Estimate" Expression="CONVERT_IMPLICIT%';
 							END;
 
 							/* @cms4j, 29.11.2013: Look for RID or Key Lookups */
@@ -6247,7 +6312,7 @@ IF @ProductVersionMajor >= 10
 													qs.query_plan_filtered
 											FROM    #dm_exec_query_stats qs
 											WHERE   COALESCE(qs.query_plan_filtered,
-															 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%Lookup="1"%';
+															CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%Lookup="1"%';
 								END; /* @cms4j, 29.11.2013: Look for RID or Key Lookups */
 
 						/* Look for missing indexes */
@@ -6278,7 +6343,7 @@ IF @ProductVersionMajor >= 10
 												qs.query_plan_filtered
 										FROM    #dm_exec_query_stats qs
 										WHERE   COALESCE(qs.query_plan_filtered,
-														 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%MissingIndexGroup%';
+														CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%MissingIndexGroup%';
 							END;
 
 						/* Look for cursors */
@@ -6309,7 +6374,7 @@ IF @ProductVersionMajor >= 10
 												qs.query_plan_filtered
 										FROM    #dm_exec_query_stats qs
 										WHERE   COALESCE(qs.query_plan_filtered,
-														 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%<StmtCursor%';
+														CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%<StmtCursor%';
 							END;
 
 		/* Look for scalar user-defined functions */
@@ -6341,7 +6406,7 @@ IF @ProductVersionMajor >= 10
 												qs.query_plan_filtered
 										FROM    #dm_exec_query_stats qs
 										WHERE   COALESCE(qs.query_plan_filtered,
-														 CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%<UserDefinedFunction%';
+														CAST(qs.query_plan AS NVARCHAR(MAX))) LIKE '%<UserDefinedFunction%';
 							END;
 
 					END; /* IF @CheckProcedureCache = 1 */
@@ -6404,7 +6469,7 @@ IF @ProductVersionMajor >= 10
                                        INNER JOIN sys.databases d ON #DBCCs.DbName = d.name
 									   WHERE    Field = 'dbi_dbccLastKnownGood'
                                          AND d.create_date < DATEADD(dd, -14, GETDATE())
-									 )
+									)
 							INSERT  INTO #BlitzResults
 									( CheckID ,
 									  DatabaseName ,
@@ -6478,7 +6543,7 @@ IF @ProductVersionMajor >= 10
 						AND
 						/* @@SERVERNAME is different than the computer name */
 						@@SERVERNAME <> CAST(ISNULL(SERVERPROPERTY('ComputerNamePhysicalNetBIOS'),@@SERVERNAME) AS NVARCHAR(128)) )
-						 BEGIN
+						BEGIN
 							
 							IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 70) WITH NOWAIT;
 							
@@ -6563,20 +6628,20 @@ IF @ProductVersionMajor >= 10
 										'Informational' AS FindingsGroup ,
 										'TraceFlag On' AS Finding ,
 										CASE WHEN [T].[TraceFlag] = '834'  AND @ColumnStoreIndexesInUse = 1 THEN 'https://support.microsoft.com/en-us/kb/3210239'
-											 ELSE'https://www.BrentOzar.com/go/traceflags/' END AS URL ,
+											ELSE'https://www.BrentOzar.com/go/traceflags/' END AS URL ,
 										'Trace flag ' +
 										CASE WHEN [T].[TraceFlag] = '2330' THEN ' 2330 enabled globally. Using this trace Flag disables missing index requests!'
-											 WHEN [T].[TraceFlag] = '1211' THEN ' 1211 enabled globally. Using this Trace Flag disables lock escalation when you least expect it. No Bueno!'
-											 WHEN [T].[TraceFlag] = '1224' THEN ' 1224 enabled globally. Using this Trace Flag disables lock escalation based on the number of locks being taken. You shouldn''t have done that, Dave.'
-											 WHEN [T].[TraceFlag] = '652'  THEN ' 652 enabled globally. Using this Trace Flag disables pre-fetching during index scans. If you hate slow queries, you should turn that off.'
-											 WHEN [T].[TraceFlag] = '661'  THEN ' 661 enabled globally. Using this Trace Flag disables ghost record removal. Who you gonna call? No one, turn that thing off.'
-											 WHEN [T].[TraceFlag] = '1806'  THEN ' 1806 enabled globally. Using this Trace Flag disables Instant File Initialization. I question your sanity.'
-											 WHEN [T].[TraceFlag] = '3505'  THEN ' 3505 enabled globally. Using this Trace Flag disables Checkpoints. Probably not the wisest idea.'
-											 WHEN [T].[TraceFlag] = '8649'  THEN ' 8649 enabled globally. Using this Trace Flag drops cost threshold for parallelism down to 0. I hope this is a dev server.'
+											WHEN [T].[TraceFlag] = '1211' THEN ' 1211 enabled globally. Using this Trace Flag disables lock escalation when you least expect it. No Bueno!'
+											WHEN [T].[TraceFlag] = '1224' THEN ' 1224 enabled globally. Using this Trace Flag disables lock escalation based on the number of locks being taken. You shouldn''t have done that, Dave.'
+											WHEN [T].[TraceFlag] = '652'  THEN ' 652 enabled globally. Using this Trace Flag disables pre-fetching during index scans. If you hate slow queries, you should turn that off.'
+											WHEN [T].[TraceFlag] = '661'  THEN ' 661 enabled globally. Using this Trace Flag disables ghost record removal. Who you gonna call? No one, turn that thing off.'
+											WHEN [T].[TraceFlag] = '1806'  THEN ' 1806 enabled globally. Using this Trace Flag disables Instant File Initialization. I question your sanity.'
+											WHEN [T].[TraceFlag] = '3505'  THEN ' 3505 enabled globally. Using this Trace Flag disables Checkpoints. Probably not the wisest idea.'
+											WHEN [T].[TraceFlag] = '8649'  THEN ' 8649 enabled globally. Using this Trace Flag drops cost threshold for parallelism down to 0. I hope this is a dev server.'
 										     WHEN [T].[TraceFlag] = '834' AND @ColumnStoreIndexesInUse = 1 THEN ' 834 is enabled globally. Using this Trace Flag with Columnstore Indexes is not a great idea.'
-											 WHEN [T].[TraceFlag] = '8017' AND (CAST(SERVERPROPERTY('Edition') AS NVARCHAR(1000)) LIKE N'%Express%') THEN ' 8017 is enabled globally, which is the default for express edition.'
+											WHEN [T].[TraceFlag] = '8017' AND (CAST(SERVERPROPERTY('Edition') AS NVARCHAR(1000)) LIKE N'%Express%') THEN ' 8017 is enabled globally, which is the default for express edition.'
                                              WHEN [T].[TraceFlag] = '8017' AND (CAST(SERVERPROPERTY('Edition') AS NVARCHAR(1000)) NOT LIKE N'%Express%') THEN ' 8017 is enabled globally. Using this Trace Flag disables creation schedulers for all logical processors. Not good.'
-											 ELSE [T].[TraceFlag] + ' is enabled globally.' END
+											ELSE [T].[TraceFlag] + ' is enabled globally.' END
 										AS Details
 								FROM    #TraceStatus T;
 					END;
@@ -6657,7 +6722,7 @@ IF @ProductVersionMajor >= 10
 													   FROM     sys.master_files b
 													   WHERE    a.database_id = b.database_id
 																AND b.type = 0
-													 )
+													)
 										AND a.database_id IN (
 										SELECT  database_id
 										FROM    sys.databases
@@ -6886,7 +6951,7 @@ IF @ProductVersionMajor >= 10
 								ELSE 'You''re running ' + CAST([ohi].[host_distribution] AS VARCHAR(35)) + ', version ' + CAST([ohi].[host_release] AS VARCHAR(5))
 								END
 							   ) AS [Details]
-							 FROM [sys].[dm_os_host_info] [ohi];
+							FROM [sys].[dm_os_host_info] [ohi];
 					END;
 					ELSE
 					BEGIN
@@ -6924,7 +6989,7 @@ IF @ProductVersionMajor >= 10
 										ELSE 'Hot dog! You''re living in the future! You''re running version ' + CAST([owi].[windows_release] AS VARCHAR(5))
 										END
 									   ) AS [Details]
-									 FROM [sys].[dm_os_windows_info] [owi];
+									FROM [sys].[dm_os_windows_info] [owi];
 
 							END;
 						END;
@@ -6957,9 +7022,9 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 							'https://BrentOzar.com/go/lpim' AS [URL] ,
 							( 'You currently have '
 							  + CASE WHEN [dopm].[locked_page_allocations_kb] / 1024. / 1024. > 0
-									 THEN CAST([dopm].[locked_page_allocations_kb] / 1024 / 1024 AS VARCHAR(100))
+									THEN CAST([dopm].[locked_page_allocations_kb] / 1024 / 1024 AS VARCHAR(100))
 										  + ' GB'
-									 ELSE CAST([dopm].[locked_page_allocations_kb] / 1024 AS VARCHAR(100))
+									ELSE CAST([dopm].[locked_page_allocations_kb] / 1024 AS VARCHAR(100))
 										  + ' MB'
 								END + ' of pages locked in memory.' ) AS [Details]
 						  FROM
@@ -7288,9 +7353,9 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 										FROM    #SkipChecks
 										WHERE   DatabaseName IS NULL AND CheckID = 103 )
 							AND EXISTS ( SELECT *
-										 FROM   sys.all_objects o
+										FROM   sys.all_objects o
 												INNER JOIN sys.all_columns c ON o.object_id = c.object_id
-										 WHERE  o.name = 'dm_os_sys_info'
+										WHERE  o.name = 'dm_os_sys_info'
 												AND c.name = 'virtual_machine_type_desc' )
 							BEGIN
 								
@@ -7316,9 +7381,9 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 										FROM    #SkipChecks
 										WHERE   DatabaseName IS NULL AND CheckID = 214 )
 							AND EXISTS ( SELECT *
-										 FROM   sys.all_objects o
+										FROM   sys.all_objects o
 												INNER JOIN sys.all_columns c ON o.object_id = c.object_id
-										 WHERE  o.name = 'dm_os_sys_info'
+										WHERE  o.name = 'dm_os_sys_info'
 												AND c.name = 'container_type_desc' )
 							BEGIN
 								
@@ -7344,13 +7409,13 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 										FROM    #SkipChecks
 										WHERE   DatabaseName IS NULL AND CheckID = 114 )
 							AND EXISTS ( SELECT *
-										 FROM   sys.all_objects o
-										 WHERE  o.name = 'dm_os_memory_nodes' )
+										FROM   sys.all_objects o
+										WHERE  o.name = 'dm_os_memory_nodes' )
 							AND EXISTS ( SELECT *
-										 FROM   sys.all_objects o
-										 INNER JOIN sys.all_columns c ON o.object_id = c.object_id
-										 WHERE  o.name = 'dm_os_nodes'
-                                	 		AND c.name = 'processor_group' )
+										FROM   sys.all_objects o
+										INNER JOIN sys.all_columns c ON o.object_id = c.object_id
+										WHERE  o.name = 'dm_os_nodes'
+                                			AND c.name = 'processor_group' )
 							BEGIN
 								
 								IF @Debug IN (1, 2) RAISERROR('Running CheckId [%d].', 0, 1, 114) WITH NOWAIT;
@@ -7435,7 +7500,7 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 							             THEN 'balanced power mode -- Uh... you want your CPUs to run at full speed, right?'
 							             WHEN '8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c'
 							             THEN 'high performance power mode'
-										 ELSE 'an unknown power mode.'
+										ELSE 'an unknown power mode.'
 							        END AS Details
 								
 								END;
@@ -7495,7 +7560,7 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 										  Details
 										)
 										SELECT
-												 106 AS CheckID
+												106 AS CheckID
 												,250 AS Priority
 												,'Server Info' AS FindingsGroup
 												,'Default Trace Contents' AS Finding
@@ -7538,7 +7603,7 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 											  Details
 											)
 											SELECT TOP 9
-													 152 AS CheckID
+													152 AS CheckID
 													,240 AS Priority
 													,'Wait Stats' AS FindingsGroup
 													, CAST(ROW_NUMBER() OVER(ORDER BY os.wait_time_ms DESC) AS NVARCHAR(10)) + N' - ' + os.wait_type AS Finding
@@ -7757,8 +7822,8 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 							AND @OutputSchemaName IS NOT NULL
 							AND @OutputTableName IS NOT NULL
 							AND EXISTS ( SELECT *
-								 FROM   sys.databases
-								 WHERE  QUOTENAME([name]) = @OutputDatabaseName)
+								FROM   sys.databases
+								WHERE  QUOTENAME([name]) = @OutputDatabaseName)
 							BEGIN
 								SET @ValidOutputLocation = 1;
 							END;
@@ -7766,8 +7831,8 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 							AND @OutputSchemaName IS NOT NULL
 							AND @OutputTableName IS NOT NULL
 							AND NOT EXISTS ( SELECT *
-								 FROM   sys.databases
-								 WHERE  QUOTENAME([name]) = @OutputDatabaseName)
+								FROM   sys.databases
+								WHERE  QUOTENAME([name]) = @OutputDatabaseName)
 							BEGIN
 								RAISERROR('The specified output database was not found on this server', 16, 0);
 							END;
@@ -7989,27 +8054,27 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 							CAST(ROUND(100.00 * total_worker_time
 									   / ( SELECT   SUM(total_worker_time)
 										   FROM     sys.dm_exec_query_stats
-										 ), 2) AS MONEY) AS PercentCPU ,
+										), 2) AS MONEY) AS PercentCPU ,
 							total_elapsed_time / execution_count AS AvgDuration ,
 							total_elapsed_time AS TotalDuration ,
 							CAST(ROUND(100.00 * total_elapsed_time
 									   / ( SELECT   SUM(total_elapsed_time)
 										   FROM     sys.dm_exec_query_stats
-										 ), 2) AS MONEY) AS PercentDuration ,
+										), 2) AS MONEY) AS PercentDuration ,
 							total_logical_reads / execution_count AS AvgReads ,
 							total_logical_reads AS TotalReads ,
 							CAST(ROUND(100.00 * total_logical_reads
 									   / ( SELECT   SUM(total_logical_reads)
 										   FROM     sys.dm_exec_query_stats
-										 ), 2) AS MONEY) AS PercentReads ,
+										), 2) AS MONEY) AS PercentReads ,
 							execution_count ,
 							CAST(ROUND(100.00 * execution_count
 									   / ( SELECT   SUM(execution_count)
 										   FROM     sys.dm_exec_query_stats
-										 ), 2) AS MONEY) AS PercentExecutions ,
+										), 2) AS MONEY) AS PercentExecutions ,
 							CASE WHEN DATEDIFF(mi, creation_time,
 											   qs.last_execution_time) = 0 THEN 0
-								 ELSE CAST(( 1.00 * execution_count / DATEDIFF(mi,
+								ELSE CAST(( 1.00 * execution_count / DATEDIFF(mi,
 																  creation_time,
 																  qs.last_execution_time) ) AS MONEY)
 							END AS executions_per_minute ,
@@ -8030,7 +8095,7 @@ IF @ProductVersionMajor >= 10 AND  NOT EXISTS ( SELECT  1
 							   WHEN 'EXECCOUNT' THEN execution_count
 							   WHEN 'DURATION' THEN total_elapsed_time
 							   ELSE total_worker_time
-							 END DESC;
+							END DESC;
 
 	END; /* ELSE -- IF @OutputType = 'SCHEMA' */
 
@@ -8047,3 +8112,4 @@ EXEC [dbo].[sp_Blitz]
     @CheckProcedureCacheFilter = NULL,
     @CheckServerInfo = 1
 */
+
